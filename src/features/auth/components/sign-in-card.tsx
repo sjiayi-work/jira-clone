@@ -10,27 +10,26 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { loginSchema } from '../schemas';
+import { useLogin } from '../api/use-login';
 
 /**
  * JC-2: SignInCard component.
  */
 
-const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(1, 'Required')
-});
-
 export const SignInCard = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
+    const { mutate } = useLogin();
+    
+    const form = useForm<z.infer<typeof loginSchema>>({
         defaultValues: {
             email: '',
             password: ''
         },
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(loginSchema)
     });
     
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = (values: z.infer<typeof loginSchema>) => {
+        mutate({ json: values });
     };
     
     return (
