@@ -10,20 +10,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { signupSchema } from '../schemas';
+import { useRegister } from '../api/use-register';
 
 /**
  * JC-2: SignUpCard component.
  */
 
-const formSchema = z.object({
-    name: z.string().trim().min(1, 'Required'),
-    email: z.string().email(),
-    password: z.string().min(8, 'Minimum of 8 characters required')
-});
-
 export const SignUpCard = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const { mutate } = useRegister();
+    
+    const form = useForm<z.infer<typeof signupSchema>>({
+        resolver: zodResolver(signupSchema),
         defaultValues: {
             name: '',
             email: '',
@@ -31,8 +29,8 @@ export const SignUpCard = () => {
         }
     });
     
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = (values: z.infer<typeof signupSchema>) => {
+        mutate({ json: values });
     };
     
     return (
