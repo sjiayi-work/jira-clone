@@ -1,7 +1,8 @@
+import { useRouter } from 'next/navigation';
 import { InferResponseType } from 'hono';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { client } from '@/lib/rpc';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 /**
  * JC-4: Define a custom hook `useLogout` that performs a logout operation using React Query
@@ -12,6 +13,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 type ResponseType = InferResponseType<typeof client.api.auth.logout['$post']>;
 
 export const useLogout = () => {
+    const router = useRouter();
     const queryClient = useQueryClient();
     
     const mutation = useMutation<ResponseType, Error>({
@@ -20,6 +22,7 @@ export const useLogout = () => {
             return await response.json();
         },
         onSuccess: () => {
+            router.refresh();
             queryClient.invalidateQueries({ queryKey: ['current'] });
         }
     });

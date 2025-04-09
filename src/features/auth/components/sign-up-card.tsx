@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,7 +20,7 @@ import { useRegister } from '../api/use-register';
  */
 
 export const SignUpCard = () => {
-    const { mutate } = useRegister();
+    const { mutate, isPending } = useRegister();
     
     const form = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
@@ -84,7 +86,7 @@ export const SignUpCard = () => {
                             </FormItem>
                         )} />
                         
-                        <Button className="w-full" size="lg" disabled={false}>Sign Up</Button>
+                        <Button className="w-full" size="lg" disabled={isPending}>Sign Up</Button>
                     </form>
                 </Form>
             </CardContent>
@@ -94,10 +96,10 @@ export const SignUpCard = () => {
             </div>
             
             <CardContent className="p-7 flex flex-col gap-y-4">
-                <Button className="w-full" size="lg" variant="secondary" disabled={false}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
                     <FcGoogle className="mr-2 size-5" />Login with Google
                 </Button>
-                <Button className="w-full" size="lg" variant="secondary" disabled={false}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
                     <FaGithub className="mr-2 size-5" />Login with Github
                 </Button>
             </CardContent>

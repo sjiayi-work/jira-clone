@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -18,7 +20,7 @@ import { useLogin } from '../api/use-login';
  */
 
 export const SignInCard = () => {
-    const { mutate } = useLogin();
+    const { mutate, isPending } = useLogin();
     
     const form = useForm<z.infer<typeof loginSchema>>({
         defaultValues: {
@@ -63,7 +65,7 @@ export const SignInCard = () => {
                             </FormItem>
                         )} />
                         
-                        <Button className="w-full" size="lg" disabled={false}>Login</Button>
+                        <Button className="w-full" size="lg" disabled={isPending}>Login</Button>
                     </form>
                 </Form>
             </CardContent>
@@ -73,10 +75,10 @@ export const SignInCard = () => {
             </div>
             
             <CardContent className="p-7 flex flex-col gap-y-4">
-                <Button className="w-full" size="lg" variant="secondary" disabled={false}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
                     <FcGoogle className="mr-2 size-5" />Login with Google
                 </Button>
-                <Button className="w-full" size="lg" variant="secondary" disabled={false}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
                     <FaGithub className="mr-2 size-5" />Login with Github
                 </Button>
             </CardContent>
