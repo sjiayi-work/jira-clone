@@ -1,12 +1,19 @@
-'use client';   // <-- open boundary between server and client
+import { redirect } from 'next/navigation';
 
+import { getCurrent } from '@/features/auth/actions';
 import { SignInCard } from '@/features/auth/components/sign-in-card';
 
 /**
  * JC-2: SignIn page.
  */
 
-const SignInPage = () => {
+const SignInPage = async () => {
+    // JC-5: check and "protect" the page from loading if user is logged in
+    const user = await getCurrent();
+    if (user) {
+        redirect('/');
+    }
+    
     return <SignInCard />
 };
 
