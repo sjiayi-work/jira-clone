@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'sonner';
 
 import { cn } from '@/lib/utils';
 
@@ -19,7 +20,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="en">
             <body className={cn(inter.className, 'antialiased min-h-screen')}>
-                <QueryProvider>{children}</QueryProvider>
+                <QueryProvider>
+                    <Toaster />
+                    {children}
+                </QueryProvider>
             </body>
         </html>
     );
