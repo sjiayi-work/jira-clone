@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { getCurrent } from '@/features/auth/actions';
+import { CreateWorkspaceForm } from '@/features/workspaces/components/create-workspace-form';
 
 export default async function Home() {
     // JC-5: check and "protect" the page from loading if no user
@@ -10,8 +11,8 @@ export default async function Home() {
     }
     
     return (
-        <div>
-            This is a home page
+        <div className="bg-neutral-500 p-4 h-full">
+            <CreateWorkspaceForm />
         </div>
     );
 };
