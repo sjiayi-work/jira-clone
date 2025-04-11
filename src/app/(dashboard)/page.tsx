@@ -1,18 +1,20 @@
 import { redirect } from 'next/navigation';
 
 import { getCurrent } from '@/features/auth/actions';
-import { CreateWorkspaceForm } from '@/features/workspaces/components/create-workspace-form';
+import { getWorkspaces } from '@/features/workspaces/actions';
 
-export default async function Home() {
+export default async function DashboadPage() {
     // JC-5: check and "protect" the page from loading if no user
     const user = await getCurrent();
     if (!user) {
         redirect('/sign-in');
     }
     
-    return (
-        <div className="bg-neutral-500 p-4 h-full">
-            <CreateWorkspaceForm />
-        </div>
-    );
+    // JC-11: Redirect to the first workspace page, or go to the create page.
+    const workspaces = await getWorkspaces();
+    if (workspaces.total === 0) {
+        redirect('/workspaces/create');
+    } else {
+        redirect(`/workspaces/${workspaces.documents[0].$id}`);
+    }
 };
