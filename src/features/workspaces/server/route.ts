@@ -30,6 +30,13 @@ const app = new Hono()
             imageUrl: uploadedImageUrl
         });
         return c.json({ data: workspace });
+    })
+    // JC-9: List all workspaces
+    .get('/', sessionMiddleware, async (c) => {
+        const databases = c.get('databases');
+        
+        const workspaces = await databases.listDocuments(DATABASE_ID, WORKSPACES_ID);
+        return c.json({ data: workspaces });
     });
 
 export default app;
