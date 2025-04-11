@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { DottedSeparator } from './dotted-separator';
 import { Navigation } from './navigation';
+import { WorkspaceSwitcher } from '@/features/workspaces/components/workspace-switcher';
 
 /**
  * JC-6: Sidebar component.
@@ -17,6 +18,10 @@ export const Sidebar = () => {
             <Link href="/">
                 <Image src="/logo.svg" alt="logo" width={164} height={48} />
             </Link>
+            
+            <DottedSeparator className="my-4" />
+            
+            <WorkspaceSwitcher />
             
             <DottedSeparator className="my-4" />
             
