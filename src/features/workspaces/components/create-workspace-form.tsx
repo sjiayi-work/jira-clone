@@ -14,6 +14,7 @@ import { DottedSeparator } from '@/components/dotted-separator';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 import { useCreateWorkspace } from '../api/use-create-workspace';
 import { createWorkspaceSchema } from '../schema';
@@ -127,7 +128,8 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                         <DottedSeparator className="py-7" />
                         
                         <div className="flex items-center justify-between">
-                            <Button type="button" size="lg" variant="secondary" onClick={onCancel} disabled={isPending}>Cancel</Button>
+                            <Button type="button" size="lg" variant="secondary" onClick={onCancel} disabled={isPending}
+                                    className={cn(!onCancel && 'invisible')}>Cancel</Button>
                             <Button type="submit" size="lg" disabled={isPending}>Create Workspace</Button>
                         </div>
                     </form>
