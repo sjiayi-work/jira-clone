@@ -4,10 +4,11 @@ import { ID, Query } from 'node-appwrite';
 
 import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID } from '@/config';
 import { MemberRole } from '@/features/members/types';
+import { getMember } from '@/features/members/utils';
 import { sessionMiddleware } from '@/lib/session-middleware';
 import { generateInviteCode } from '@/lib/utils';
 
-import { createWorkspaceSchema } from '../schema';
+import { createWorkspaceSchema, updateWorkspaceSchema } from '../schema';
 
 const app = new Hono()
     // JC-7: Create a workspace
@@ -62,6 +63,36 @@ const app = new Hono()
         const queries = [Query.orderDesc('$createdAt'), Query.contains('$id', workspaceIds)];
         const workspaces = await databases.listDocuments(DATABASE_ID, WORKSPACES_ID, queries);
         return c.json({ data: workspaces });
+    })
+    // JC-13: Update workspace settings
+    .patch('/:workspaceId', sessionMiddleware, zValidator('form', updateWorkspaceSchema), async (c) => {
+        const databases = c.get('databases');
+        const storage = c.get('storage');
+        const user = c.get('user');
+        
+        const { workspaceId } = c.req.param();
+        const { name, image } = c.req.valid('form');
+        
+        const member = await getMember({ 
+            databases, 
+            workspaceId, 
+            userId: user.$id
+        });
+        
+        if (!member || member.role !== MemberRole.ADMIN) {
+            return c.json({ error: 'Unauthorized' }, 401);
+        }
+        
+        let uploadedImageUrl: string | undefined;
+        
+        if (image) {
+            const file = await storage.createFile(IMAGES_BUCKET_ID, ID.unique(), image);
+            const arrayBuffer = await storage.getFileView(IMAGES_BUCKET_ID, file.$id);
+            uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString('base64')}`;
+        }
+        
+        const workspace = await databases.updateDocument(DATABASE_ID, WORKSPACES_ID, workspaceId, { name, imageUrl: uploadedImageUrl });
+        return c.json({ data: workspace });
     });
 
 export default app;
