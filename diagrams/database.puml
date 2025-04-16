@@ -16,6 +16,14 @@ entity members {
     * role: enum
 }
 
+entity projects {
+    * workspaceId: string <<FK>>
+    ---
+    * name: string
+    imageUrl: string
+}
+
 workspaces ||--|{ members
+workspaces ||--o{ projects
 
 @enduml

@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Projects } from '@/features/projects/components/projects';
+import { WorkspaceSwitcher } from '@/features/workspaces/components/workspace-switcher';
+
 import { DottedSeparator } from './dotted-separator';
 import { Navigation } from './navigation';
-import { WorkspaceSwitcher } from '@/features/workspaces/components/workspace-switcher';
 
 /**
  * JC-6: Sidebar component.
@@ -26,6 +28,10 @@ export const Sidebar = () => {
             <DottedSeparator className="my-4" />
             
             <Navigation />
+            
+            <DottedSeparator className="my-4" />
+            
+            <Projects />
         </aside>
     );
 };
