@@ -1,6 +1,7 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { ID, Query } from 'node-appwrite';
+import { z } from 'zod';
 
 import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID } from '@/config';
 import { MemberRole } from '@/features/members/types';
@@ -9,6 +10,7 @@ import { sessionMiddleware } from '@/lib/session-middleware';
 import { generateInviteCode } from '@/lib/utils';
 
 import { createWorkspaceSchema, updateWorkspaceSchema } from '../schema';
+import { Workspace } from '../types';
 
 const INVITE_CODE_LENGTH = 6;
 
@@ -131,6 +133,34 @@ const app = new Hono()
         });
         
         return c.json({ data: workspace });
-    });;
+    })
+    // JC-17: Join workspace
+    .post('/:workspaceId/join', sessionMiddleware, zValidator('json', z.object({ code: z.string() })), async (c) => {
+        const { workspaceId } = c.req.param();
+        const { code } = c.req.valid('json');
+        
+        const databases = c.get('databases');
+        const user = c.get('user');
+        const userId = user.$id;
+        
+        const member = await getMember({ databases, workspaceId, userId: userId });
+        if (member) {
+            return c.json({ error: 'Already a member' }, 400);
+        }
+        
+        const workspace = await databases.getDocument<Workspace>(DATABASE_ID, WORKSPACES_ID, workspaceId);
+        if (workspace.inviteCode !== code) {
+            return c.json({ error: 'Invalid invite code' }, 400);
+        }
+        
+        // create member
+        await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), { 
+            workspaceId,
+            userId,
+            role: MemberRole.MEMBER
+        });
+        
+        return c.json({ data: workspace });
+    });
 
 export default app;
