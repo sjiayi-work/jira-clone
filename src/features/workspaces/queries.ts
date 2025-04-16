@@ -37,7 +37,6 @@ export const getWorkspaces = async () => {
     }
 };
 
-
 // JC-13: Retrieve a workspace by its id.
 interface GetWorkspaceProps {
     workspaceId: string;
@@ -55,6 +54,30 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspaceProps) => {
         
         const workspace = await databases.getDocument<Workspace>(DATABASE_ID, WORKSPACES_ID, workspaceId);
         return workspace;
+        
+    } catch {
+        return null;
+    }
+};
+
+interface GetWorkspaceInfoProps {
+    workspaceId: string;
+}
+
+/**
+ * JC-17: Get workspace details without needing membership.
+ * @param props - Required parameters.
+ * @param props.workspaceId - Workspace id. 
+ * @returns An object containing properties: name
+ */
+export const getWorkspaceInfo = async ({ workspaceId }: GetWorkspaceInfoProps) => {
+    try {
+        const { databases } = await createSessionClient();
+        const workspace = await databases.getDocument<Workspace>(DATABASE_ID, WORKSPACES_ID, workspaceId);
+        
+        return {
+            name: workspace.name
+        };
         
     } catch {
         return null;
