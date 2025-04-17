@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -13,11 +14,11 @@ import { DottedSeparator } from '@/components/dotted-separator';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 import { cn } from '@/lib/utils';
 
 import { useCreateProject } from '../api/use-create-project';
 import { createProjectSchema } from '../schemas';
-import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 
 interface CreateProjectFormProps {
     onCancel?: () => void;
@@ -34,18 +35,17 @@ interface CreateProjectFormProps {
  * <CreateProjectForm onCancel={() => {}} />
  */
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
+    const router = useRouter();
+    const inputRef = useRef<HTMLInputElement>(null);
     const workspaceId = useWorkspaceId();
     
     const formSchema = createProjectSchema.omit({ workspaceId: true });
-    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: ''
         }
     });
-    
-    const inputRef = useRef<HTMLInputElement>(null);
     
     const { mutate, isPending } = useCreateProject();
     
@@ -57,9 +57,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
         };
         
         mutate({ form: finalValues }, {
-            onSuccess: () => {
+            onSuccess: ({ data }) => {
                 form.reset();
-                // TODO: redirect to project screen
+                router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
             }
         });
     };

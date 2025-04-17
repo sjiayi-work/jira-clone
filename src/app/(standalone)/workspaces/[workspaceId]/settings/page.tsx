@@ -18,9 +18,6 @@ const WorkspaceIdSettingsPage = async ({ params }: WorkspaceIdSettingsPageProps)
     
     const { workspaceId } = await params;
     const initialValues = await getWorkspace({ workspaceId: workspaceId });
-    if (!initialValues) {
-        redirect(`/workspaces/${workspaceId}`);
-    }
     
     return (
         <div className="w-full lg:max-w-xl">
