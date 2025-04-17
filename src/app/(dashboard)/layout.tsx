@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Sidebar } from '@/components/sidebar';
 import { CreateProjectModal } from '@/features/projects/components/create-project-modal';
+import { CreateTaskModal } from '@/features/tasks/components/create-task-modal';
 import { CreateWorkspaceModal } from '@/features/workspaces/components/create-workspace-modal';
 
 /**
@@ -16,6 +17,8 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
             <CreateWorkspaceModal />
             
             <CreateProjectModal />
+            
+            <CreateTaskModal />
             
             <div className="flex w-full h-full">
                 <div className="fixed left-0 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
