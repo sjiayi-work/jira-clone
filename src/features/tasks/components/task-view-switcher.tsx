@@ -10,6 +10,8 @@ import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 
 import { useGetTasks } from '../api/use-get-tasks';
 import { DataFilters } from './data-filters';
+import { DataTable } from './data-table';
+import { columns } from './columns';
 import { useCreateTaskModal } from '../hooks/use-create-task-modal';
 import { useTaskFilters } from '../hooks/use-task-filters';
 
@@ -67,7 +69,8 @@ export const TaskViewSwitcher = () => {
                 ) : (
                     <>
                         <TabsContent className="mt-0" value="table">
-                            { JSON.stringify(tasks) }
+                            {/* JC-24: Implement data table */}
+                            <DataTable columns={columns} data={tasks?.documents || []} />
                         </TabsContent>
                         <TabsContent className="mt-0" value="kanban">
                             { JSON.stringify(tasks) }

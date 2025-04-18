@@ -10,7 +10,7 @@ import { createAdminClient } from '@/lib/appwrite';
 import { sessionMiddleware } from '@/lib/session-middleware';
 
 import { createTaskSchema } from '../schemas';
-import { TaskStatus } from '../types';
+import { Task, TaskStatus } from '../types';
 
 const app = new Hono()
     // JC-21: Create a task
@@ -96,7 +96,7 @@ const app = new Hono()
             queries.push(Query.equal('name', search));
         }
         
-        const tasks = await databases.listDocuments(DATABASE_ID, TASKS_ID, queries);
+        const tasks = await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, queries);
         
         const documents = tasks.documents;
         const projectIds = documents.map((task) => task.projectId);
@@ -118,7 +118,7 @@ const app = new Hono()
         
         const populatedTasks = documents.map((task) => {
             const project = projects.documents.find((project) => project.$id === task.projectId);
-            const assignee = assignees.find((assignee) => assignee.$id === task.asigneeId);
+            const assignee = assignees.find((assignee) => assignee.$id === task.assigneeId);
             
             return {
                 ...task,

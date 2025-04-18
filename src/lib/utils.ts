@@ -20,3 +20,12 @@ export function generateInviteCode(length: number): string {
     
     return result;
 };
+
+/**
+ * JC-24: Convert snake case to title case.
+ * @param str The string value to convert.
+ * @returns String in title case.
+ */
+export function snakeCaseToTitleCase(str: string): string {
+    return str.toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+};
