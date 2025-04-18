@@ -1,12 +1,12 @@
 import { useQueryState, parseAsBoolean } from 'nuqs';
 
 /**
- * JC-22: Custom hook to control the visibility state of the "Create Project" modal
- * using a URL query parameter (`?create-project=true`).
+ * JC-22: Custom hook to control the visibility state of the "Create Task" modal
+ * using a URL query parameter (`?create-task=true`).
  *
  * Uses `nuqs` to sync modal state with the URL:
  * - `isOpen`: Boolean state derived from the query param.
- * - `open()`: Sets `create-project=true` in the URL.
+ * - `open()`: Sets `create-task=true` in the URL.
  * - `close()`: Removes the param (or sets it to false).
  *
  * Default behavior:
