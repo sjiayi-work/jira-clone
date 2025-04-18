@@ -15,6 +15,9 @@ import { DataTable } from './data-table';
 import { columns } from './columns';
 import { useCreateTaskModal } from '../hooks/use-create-task-modal';
 import { useTaskFilters } from '../hooks/use-task-filters';
+import { useCallback } from 'react';
+import { KanbanInfo } from '../types';
+import { useBulkUpdateTasks } from '../api/use-bulk-update-tasks';
 
 /**
  * JC-21: Task view component with multiple tabls.
@@ -32,6 +35,12 @@ export const TaskViewSwitcher = () => {
     const workspaceId = useWorkspaceId();
     const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId, projectId, assigneeId, status, dueDate });
     const { open } = useCreateTaskModal();
+    
+    // JC-27: Bulk update tasks
+    const { mutate: bulkUpdate } = useBulkUpdateTasks();
+    const onKanbanChange = useCallback((tasks: KanbanInfo[]) => {
+        bulkUpdate({ json: { tasks } });
+    }, [bulkUpdate]);
     
     return (
         <Tabs className="flex-1 w-full border rounded-lg" defaultValue={view} onValueChange={setView}>
@@ -76,7 +85,7 @@ export const TaskViewSwitcher = () => {
                         
                         {/* JC-26: Implement Kanban */}
                         <TabsContent className="mt-0" value="kanban">
-                            <DataKanban data={tasks?.documents || []} />
+                            <DataKanban data={tasks?.documents || []} onChange={onKanbanChange} />
                         </TabsContent>
                         
                         <TabsContent className="mt-0" value="calendar">
