@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/sidebar';
 import { CreateProjectModal } from '@/features/projects/components/create-project-modal';
 import { CreateTaskModal } from '@/features/tasks/components/create-task-modal';
 import { CreateWorkspaceModal } from '@/features/workspaces/components/create-workspace-modal';
+import { EditTaskModal } from '@/features/tasks/components/edit-task-modal';
 
 /**
  * JC-6: Dashboard layout.
@@ -19,6 +20,8 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
             <CreateProjectModal />
             
             <CreateTaskModal />
+            
+            <EditTaskModal />
             
             <div className="flex w-full h-full">
                 <div className="fixed left-0 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
