@@ -10,6 +10,7 @@ import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 
 import { useGetTasks } from '../api/use-get-tasks';
 import { DataFilters } from './data-filters';
+import { DataKanban } from './data-kanban';
 import { DataTable } from './data-table';
 import { columns } from './columns';
 import { useCreateTaskModal } from '../hooks/use-create-task-modal';
@@ -68,13 +69,16 @@ export const TaskViewSwitcher = () => {
                     </div>
                 ) : (
                     <>
+                        {/* JC-24: Implement data table */}
                         <TabsContent className="mt-0" value="table">
-                            {/* JC-24: Implement data table */}
                             <DataTable columns={columns} data={tasks?.documents || []} />
                         </TabsContent>
+                        
+                        {/* JC-26: Implement Kanban */}
                         <TabsContent className="mt-0" value="kanban">
-                            { JSON.stringify(tasks) }
+                            <DataKanban data={tasks?.documents || []} />
                         </TabsContent>
+                        
                         <TabsContent className="mt-0" value="calendar">
                             { JSON.stringify(tasks) }
                         </TabsContent>
