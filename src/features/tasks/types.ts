@@ -23,3 +23,9 @@ export type TaskInfo = Task & {
     project: Project;
     assignee: object;
 };
+
+export type KanbanInfo = {
+    $id: string;
+    status: TaskStatus;
+    position: number;
+};
