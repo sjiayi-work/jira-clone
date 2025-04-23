@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { Loader, PlusIcon } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 
@@ -8,16 +9,16 @@ import { DottedSeparator } from '@/components/dotted-separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 
+import { useBulkUpdateTasks } from '../api/use-bulk-update-tasks';
 import { useGetTasks } from '../api/use-get-tasks';
+import { DataCalendar } from './data-calendar';
 import { DataFilters } from './data-filters';
 import { DataKanban } from './data-kanban';
 import { DataTable } from './data-table';
 import { columns } from './columns';
 import { useCreateTaskModal } from '../hooks/use-create-task-modal';
 import { useTaskFilters } from '../hooks/use-task-filters';
-import { useCallback } from 'react';
 import { KanbanInfo } from '../types';
-import { useBulkUpdateTasks } from '../api/use-bulk-update-tasks';
 
 /**
  * JC-21: Task view component with multiple tabls.
@@ -78,18 +79,19 @@ export const TaskViewSwitcher = () => {
                     </div>
                 ) : (
                     <>
-                        {/* JC-24: Implement data table */}
+                        {/* JC-24: Implement Table view */}
                         <TabsContent className="mt-0" value="table">
                             <DataTable columns={columns} data={tasks?.documents || []} />
                         </TabsContent>
                         
-                        {/* JC-26: Implement Kanban */}
+                        {/* JC-26: Implement Kanban view */}
                         <TabsContent className="mt-0" value="kanban">
                             <DataKanban data={tasks?.documents || []} onChange={onKanbanChange} />
                         </TabsContent>
                         
-                        <TabsContent className="mt-0" value="calendar">
-                            { JSON.stringify(tasks) }
+                        {/* JC-28: Implement Calendar view */}
+                        <TabsContent className="mt-0 h-full pb-4" value="calendar">
+                            <DataCalendar data={tasks?.documents || []} />
                         </TabsContent>
                     </>
                 )}
