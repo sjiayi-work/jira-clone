@@ -1,5 +1,4 @@
 import { Models } from 'node-appwrite';
-import { Project } from '../projects/types';
 
 export enum TaskStatus {
     BACKLOG = 'BACKLOG',
@@ -17,11 +16,7 @@ export type Task = Models.Document & {
     workspaceId: string;
     position: number;
     dueDate: string;
-};
-
-export type TaskInfo = Task & {
-    project: Project;
-    assignee: object;
+    description?: string;
 };
 
 export type KanbanInfo = {
