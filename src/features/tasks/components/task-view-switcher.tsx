@@ -20,13 +20,17 @@ import { useCreateTaskModal } from '../hooks/use-create-task-modal';
 import { useTaskFilters } from '../hooks/use-task-filters';
 import { KanbanInfo } from '../types';
 
+interface TaskViewSwitcherProps {
+    hideProjectFilter?: boolean;
+}
+
 /**
  * JC-21: Task view component with multiple tabls.
  * 
  * @example <TaskViewSwitcher />
  */
 
-export const TaskViewSwitcher = () => {
+export const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
     const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
     
     const [view, setView] = useQueryState('task-view', {
@@ -69,7 +73,7 @@ export const TaskViewSwitcher = () => {
                 <DottedSeparator className="my-4" />
                 
                 {/* JC-23: Add filters */}
-                <DataFilters />
+                <DataFilters hideProjectFilter={hideProjectFilter} />
                 
                 <DottedSeparator className="my-4" />
                 

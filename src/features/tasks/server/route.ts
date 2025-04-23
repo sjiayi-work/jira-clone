@@ -191,7 +191,7 @@ const app = new Hono()
         
         const { users } = await createAdminClient();
         
-        const task = await databases.getDocument(DATABASE_ID, TASKS_ID, taskId);
+        const task = await databases.getDocument<Task>(DATABASE_ID, TASKS_ID, taskId);
         
         const currentMember = await getMember({
             databases,
@@ -214,12 +214,14 @@ const app = new Hono()
             email: user.email
         };
         
+        const data = {
+            ...task,
+            project, 
+            assignee
+        };
+        
         return c.json({
-            data: {
-                ...task,
-                project, 
-                assignee
-            }
+            data: data
         });
     })
     // JC-27: Bulk update tasks.
