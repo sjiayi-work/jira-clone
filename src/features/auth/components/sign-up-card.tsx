@@ -1,22 +1,26 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { z } from 'zod';
 
 import { DottedSeparator } from '@/components/dotted-separator';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { signupSchema } from '../schemas';
+import { signUpWithGithub, signUpWithGoogle } from '@/lib/oauth';
+
 import { useRegister } from '../api/use-register';
+import { signupSchema } from '../schemas';
 
 /**
  * JC-2: SignUpCard component.
+ * 
+ * @example <SignUpCard />
  */
 
 export const SignUpCard = () => {
@@ -96,10 +100,10 @@ export const SignUpCard = () => {
             </div>
             
             <CardContent className="p-7 flex flex-col gap-y-4">
-                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending} onClick={signUpWithGoogle}>
                     <FcGoogle className="mr-2 size-5" />Login with Google
                 </Button>
-                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending} onClick={signUpWithGithub}>
                     <FaGithub className="mr-2 size-5" />Login with Github
                 </Button>
             </CardContent>
