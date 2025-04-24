@@ -1,37 +1,23 @@
 import { redirect } from 'next/navigation';
 
 import { getCurrent } from '@/features/auth/queries';
-import { getProject } from '@/features/projects/queries';
-import { EditProjectForm } from '@/features/projects/components/edit-project-form';
 
-interface ProjectIdSettingsPageProps {
-    params: {
-        projectId: string;
-    }
-}
+import { ProjectIdSettingsClient } from './client';
 
 /**
  * JC-20: Project settings page.
  * 
- * @param {ProjectIdSettingsPageProps} props - Page properties.
- * @param {object} props.params - Object containing page parameters.
- * @param {string} props.params.projectId - Project Id.
+ * @linkplain /workspaces/:workspaceId/projects/:projectId/settings
  */
 
-const ProjectIdSettingsPage = async ({ params }: ProjectIdSettingsPageProps) => {
+const ProjectIdSettingsPage = async () => {
     const user = getCurrent();
     if (!user) {
         redirect('/sign-in');
     }
     
-    const { projectId } = await params;
-    const project = await getProject({ projectId });
-    
-    return (
-        <div className="w-full lg:max-w-xl">
-            <EditProjectForm initialValues={project} />
-        </div>
-    );
+    // JC-30: Move data retrieval to client page.
+    return <ProjectIdSettingsClient />
 };
 
 export default ProjectIdSettingsPage;

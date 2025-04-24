@@ -1,20 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InferRequestType, InferResponseType } from 'hono';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { client } from '@/lib/rpc';
 
-/**
- * JC-13: Define a custom hook `useUpdateWorkspace` that performs an update operation using React Query and Hono type inference.
- * - This hooks invokes `PATCH /api/workspaces/:workspaceId`
- */
-
 type ResponseType = InferResponseType<typeof client.api.workspaces[':workspaceId']['$patch'], 200>;
 type RequestType = InferRequestType<typeof client.api.workspaces[':workspaceId']['$patch']>;
 
+/**
+ * JC-13: Define a custom hook `useUpdateWorkspace` that performs an update operation using React Query and Hono type inference.
+ * 
+ * @linkplain This hooks invokes `PATCH /api/workspaces/:workspaceId`
+ * @example const { mutate, isPending } = useUpdateWorkspace();
+ */
 export const useUpdateWorkspace = () => {
-    const router = useRouter();
     const queryClient = useQueryClient();
     
     const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -30,7 +29,6 @@ export const useUpdateWorkspace = () => {
         },
         onSuccess: ({ data }) => {
             toast.success('Workspace updated');
-            router.refresh();
             
             queryClient.invalidateQueries({ queryKey: ['workspaces'] });
             queryClient.invalidateQueries({ queryKey: ['workspace', data.$id] });

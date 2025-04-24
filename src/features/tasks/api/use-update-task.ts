@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InferRequestType, InferResponseType } from 'hono';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { client } from '@/lib/rpc';
@@ -10,13 +9,12 @@ type RequestType = InferRequestType<typeof client.api.tasks[':taskId']['$patch']
 
 /**
  * JC-25: Define a custom hook `useUpdateTask` that performs an update operation using React Query and Hono type inference.
- * - This hooks invokes `PATCH /api/tasks/:taskId`.
  * 
+ * @linkplain This hooks invokes `PATCH /api/tasks/:taskId`.
  * @example const { mutate, isPending } = useUpdateTask();
  */
 
 export const useUpdateTask = () => {
-    const router = useRouter();
     const queryClient = useQueryClient();
     
     const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -30,8 +28,6 @@ export const useUpdateTask = () => {
         },
         onSuccess: ({ data }) => {
             toast.success('Task updated');
-            router.refresh();
-            
             queryClient.invalidateQueries({ queryKey: ['tasks'] });
             queryClient.invalidateQueries({ queryKey: ['task', data.$id] });
         },

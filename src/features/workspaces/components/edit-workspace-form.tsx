@@ -60,11 +60,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
             image: values.image instanceof File ? values.image : ''
         };
         
-        mutate({ form: finalValues, param: { workspaceId: initialValues.$id } }, {
-            onSuccess: () => {
-                form.reset();
-            }
-        });
+        mutate({ form: finalValues, param: { workspaceId: initialValues.$id } });
     };
     
     // Handle image change
@@ -104,6 +100,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
     const handleCopyInviteLink = () => {
         navigator.clipboard.writeText(fullInviteLink).then(() => toast.success('Invite link copied to clipboard'));
     };
+    
     const [ResetDialog, confirmReset] = useConfirm('Reset invite link', 'This will invalidate the current invite link', 'destructive');
     const handleResetInviteCode = async () => {
         const ok = await confirmReset();

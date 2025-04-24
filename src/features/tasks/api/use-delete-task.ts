@@ -3,20 +3,18 @@ import { InferRequestType, InferResponseType } from 'hono';
 import { toast } from 'sonner';
 
 import { client } from '@/lib/rpc';
-import { useRouter } from 'next/navigation';
 
 type ResponseType = InferResponseType<typeof client.api.tasks[':taskId']['$delete'], 200>;
 type RequestType = InferRequestType<typeof client.api.tasks[':taskId']['$delete']>;
 
 /**
  * JC-25: Define a custom hook `useDeleteTask` that performs a delete operation using React Query and Hono type inference.
- * - This hooks invokes `DELETE /api/tasks/:taskId`.
  * 
+ * @linkplain This hooks invokes `DELETE /api/tasks/:taskId`.
  * @example const { mutate, isPending } = useDeleteTask();
  */
 
 export const useDeleteTask = () => {
-    const router = useRouter();
     const queryClient = useQueryClient();
     
     const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -30,8 +28,6 @@ export const useDeleteTask = () => {
         },
         onSuccess: ({ data }) => {
             toast.success('Task deleted');
-            router.refresh();
-            
             queryClient.invalidateQueries({ queryKey: ['tasks'] });
             queryClient.invalidateQueries({ queryKey: ['task', data.$id] });
         },
