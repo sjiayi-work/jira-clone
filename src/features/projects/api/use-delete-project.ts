@@ -1,20 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InferRequestType, InferResponseType } from 'hono';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { client } from '@/lib/rpc';
 
-/**
- * JC-20: Define a custom hook `useDeleteProject` that performs a delete operation using React Query and Hono type inference.
- * - This hooks invokes `DELETE /api/projects/:projectId`
- */
-
 type ResponseType = InferResponseType<typeof client.api.projects[':projectId']['$delete'], 200>;
 type RequestType = InferRequestType<typeof client.api.projects[':projectId']['$delete']>;
 
+/**
+ * JC-20: Define a custom hook `useDeleteProject` that performs a delete operation using React Query and Hono type inference.
+ * 
+ * @linkplain This hooks invokes `DELETE /api/projects/:projectId`
+ * @example const { mutate, isPending } = useDeleteProject();
+ */
 export const useDeleteProject = () => {
-    const router = useRouter();
     const queryClient = useQueryClient();
     
     const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -28,8 +27,6 @@ export const useDeleteProject = () => {
         },
         onSuccess: ({ data }) => {
             toast.success('Project deleted');
-            router.refresh();
-            
             queryClient.invalidateQueries({ queryKey: ['projects'] });
             queryClient.invalidateQueries({ queryKey: ['project', data.$id] });
         },

@@ -10,11 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useJoinWorkspace } from '../api/use-join-workspace';
 import { useInviteCode } from '../hooks/use-invite-code';
 import { useWorkspaceId } from '../hooks/use-workspace-id';
+import { Workspace } from '../types';
 
 interface JoinWorkspaceFormProps {
-    initialValues: {
-        name: string;
-    }
+    initialValues: Workspace;
 }
 
 /**
