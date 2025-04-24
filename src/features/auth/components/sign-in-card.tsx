@@ -12,11 +12,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { loginSchema } from '../schemas';
+import { signUpWithGithub, signUpWithGoogle } from '@/lib/oauth';
+
 import { useLogin } from '../api/use-login';
+import { loginSchema } from '../schemas';
 
 /**
  * JC-2: SignInCard component.
+ * 
+ * @example <SignInCard />
  */
 
 export const SignInCard = () => {
@@ -75,10 +79,10 @@ export const SignInCard = () => {
             </div>
             
             <CardContent className="p-7 flex flex-col gap-y-4">
-                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending} onClick={signUpWithGoogle}>
                     <FcGoogle className="mr-2 size-5" />Login with Google
                 </Button>
-                <Button className="w-full" size="lg" variant="secondary" disabled={isPending}>
+                <Button className="w-full" size="lg" variant="secondary" disabled={isPending} onClick={signUpWithGithub}>
                     <FaGithub className="mr-2 size-5" />Login with Github
                 </Button>
             </CardContent>
