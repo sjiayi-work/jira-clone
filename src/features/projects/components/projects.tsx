@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { useGetProjects } from '../api/use-get-projects';
 import { useCreateProjectModal } from '../hooks/use-create-project-modal';
 import { ProjectAvatar } from './project-avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 /**
  * JC-19: Displays list of projects.
@@ -25,8 +26,16 @@ export const Projects = () => {
         <div className="flex flex-col gap-y-2">
             <div className="flex items-center justify-between">
                 <p className="text-xs uppercase text-neutral-500">Projects</p>
-                <RiAddCircleFill className="size-5 text-neutral-500 cursor-pointer hover:opacity-75 transition" 
-                                 onClick={open} />
+                
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <RiAddCircleFill className="size-5 text-neutral-500 cursor-pointer hover:opacity-75 transition" 
+                                             onClick={open} />
+                        </TooltipTrigger>
+                        <TooltipContent>Add project</TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
             
             { data?.documents.map((project) => {

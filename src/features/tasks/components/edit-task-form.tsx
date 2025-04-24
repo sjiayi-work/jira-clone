@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
 
 import { useUpdateTask } from '../api/use-update-task';
 import { createTaskSchema } from '../schemas';
-import { TaskStatus } from '../types';
+import { Task, TaskStatus } from '../types';
 
 interface EditTaskFormProps {
     projectOptions: {
@@ -29,8 +29,7 @@ interface EditTaskFormProps {
         id: string;
         name: string;
     }[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    initialValues: any;
+    initialValues: Task;
     onCancel?: () => void;
 }
 

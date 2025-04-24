@@ -1,10 +1,10 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeftIcon, ImageIcon } from 'lucide-react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useRef } from 'react';
+import { ArrowLeftIcon, ImageIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -51,7 +51,7 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
     
     const inputRef = useRef<HTMLInputElement>(null);
     
-    const { mutate, isPending } = useUpdateProject();
+    const { mutate: updateProject, isPending } = useUpdateProject();
     const { mutate: deleteProject, isPending: isDeletingProject } = useDeleteProject();
     
     const onSubmit = (values: z.infer<typeof updateProjectSchema>) => {
@@ -60,7 +60,7 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
             image: values.image instanceof File ? values.image : ''
         };
         
-        mutate({ form: finalValues, param: { projectId: initialValues.$id } });
+        updateProject({ form: finalValues, param: { projectId: initialValues.$id } });
     };
     
     // Handle image change
