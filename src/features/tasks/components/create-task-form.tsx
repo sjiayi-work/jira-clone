@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useCreateTask } from '../api/use-create-task';
 import { createTaskSchema } from '../schemas';
 import { TaskStatus } from '../types';
+import { useProjectId } from '@/features/projects/hooks/use-project-id';
 
 interface CreateTaskFormProps {
     projectOptions: {
@@ -45,12 +46,13 @@ interface CreateTaskFormProps {
  */
 export const CreateTaskForm = ({ projectOptions, memberOptions, onCancel }: CreateTaskFormProps) => {
     const workspaceId = useWorkspaceId();
+    const projectId = useProjectId();
     
     const formSchema = createTaskSchema.omit({ workspaceId: true });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: ''
+            projectId: projectId
         }
     });
     

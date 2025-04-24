@@ -2,6 +2,7 @@ import React from 'react';
 import { CircleCheckIcon, CircleDashedIcon, CircleDotDashedIcon, CircleDotIcon, CircleIcon, PlusIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { snakeCaseToTitleCase } from '@/lib/utils';
 
 import { useCreateTaskModal } from '../hooks/use-create-task-modal';
@@ -55,9 +56,18 @@ export const KanbanColumnHeader = ({ board, taskCount }: KanbanColumnHeaderProps
                 </div>
             </div>
             
-            <Button className="size-5" variant="ghost" size="icon" onClick={open}>
-                <PlusIcon className="size-4 text-neutral-500" />
-            </Button>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button className="size-5" variant="ghost" size="icon" onClick={open}>
+                            <PlusIcon className="size-4 text-neutral-500" />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Add Task</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
         </div>
     );
 };

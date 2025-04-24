@@ -40,7 +40,7 @@ const CustomToolbar = ({ date, onNavigate }: CustomToolbarProps) => {
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                        <p>Previos</p>
+                        <p>Previous</p>
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>

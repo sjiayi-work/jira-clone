@@ -7,6 +7,7 @@ import { useQueryState } from 'nuqs';
 import { Button } from '@/components/ui/button';
 import { DottedSeparator } from '@/components/dotted-separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useProjectId } from '@/features/projects/hooks/use-project-id';
 import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 
 import { useBulkUpdateTasks } from '../api/use-bulk-update-tasks';
@@ -38,7 +39,15 @@ export const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) =
     });
     
     const workspaceId = useWorkspaceId();
-    const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId, projectId, assigneeId, status, dueDate });
+    // JC-33: Get projectId from URL
+    const currentProjectId = useProjectId();
+    const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
+        workspaceId, 
+        projectId: currentProjectId || projectId, 
+        assigneeId, 
+        status, 
+        dueDate
+    });
     const { open } = useCreateTaskModal();
     
     // JC-27: Bulk update tasks
@@ -52,15 +61,15 @@ export const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) =
             <div className="h-full flex flex-col overflow-auto p-4">
                 <div className="flex flex-col gap-y-2 lg:flex-row justify-between items-center">
                     <TabsList className="w-full lg:w-auto">
-                        <TabsTrigger className="h-8 w-full lg:w-auto" value="table">
+                        <TabsTrigger className="h-8 w-full lg:w-auto cursor-pointer" value="table">
                             Table
                         </TabsTrigger>
                         
-                        <TabsTrigger className="h-8 w-full lg:w-auto" value="kanban">
+                        <TabsTrigger className="h-8 w-full lg:w-auto cursor-pointer" value="kanban">
                             Kanban
                         </TabsTrigger>
                         
-                        <TabsTrigger className="h-8 w-full lg:w-auto" value="calendar">
+                        <TabsTrigger className="h-8 w-full lg:w-auto cursor-pointer" value="calendar">
                             Calendar
                         </TabsTrigger>
                     </TabsList>
