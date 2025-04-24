@@ -7,7 +7,7 @@ interface UseGetProjectProps {
 }
 
 /**
- * JC-30: Custom hook `useGetProject` that retrieves all workspaces.
+ * JC-30: Custom hook `useGetProject` that retrieves specific project details.
  * 
  * @param {UseGetProjectProps} props - Parameters accepted.
  * @param {string} props.projectId - Project id.

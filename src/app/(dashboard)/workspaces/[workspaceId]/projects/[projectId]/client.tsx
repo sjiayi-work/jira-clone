@@ -10,6 +10,8 @@ import { useGetProject } from '@/features/projects/api/use-get-project';
 import { ProjectAvatar } from '@/features/projects/components/project-avatar';
 import { useProjectId } from '@/features/projects/hooks/use-project-id';
 import { TaskViewSwitcher } from '@/features/tasks/components/task-view-switcher';
+import { useGetProjectAnalytics } from '@/features/projects/api/use-get-project-analytics';
+import { Analytics } from '@/components/analytics';
 
 /**
  * JC-30: Client component of Project page.
@@ -19,7 +21,11 @@ import { TaskViewSwitcher } from '@/features/tasks/components/task-view-switcher
 
 export const ProjectIdClient = () => {
     const projectId = useProjectId();
-    const { data: project, isLoading } = useGetProject({ projectId });
+    const { data: project, isLoading: isLoadingProject } = useGetProject({ projectId });
+    // JC-31: Get analytics
+    const { data: analytics, isLoading: isLoadingAnalytics } = useGetProjectAnalytics({ projectId });
+    
+    const isLoading = isLoadingProject || isLoadingAnalytics;
     
     if (isLoading) {
         return <PageLoader />
@@ -45,6 +51,9 @@ export const ProjectIdClient = () => {
                     </Button>
                 </div>
             </div>
+            
+            {/* JC-31: Display Analytics component */}
+            { analytics && <Analytics data={analytics} /> }
             
             <TaskViewSwitcher hideProjectFilter />
         </div>
