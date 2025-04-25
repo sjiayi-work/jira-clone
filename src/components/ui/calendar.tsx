@@ -60,7 +60,6 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        // @ts-expect-error - Force custom icons if needed
         IconLeft: ({ className, ...props }) => (
           <ChevronLeft className={cn("size-4", className)} {...props} />
         ),

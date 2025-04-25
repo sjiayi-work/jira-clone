@@ -10,7 +10,7 @@ import { PageError } from '@/components/page-error';
 import { PageLoader } from '@/components/page-loader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useGetMembers } from '@/features/members/api/use-get-members';
 import { MemberAvatar } from '@/features/members/components/member-avatar';
 import { Member } from '@/features/members/types';
@@ -85,9 +85,17 @@ export const TaskList = ({ data, total }: TaskListProps) => {
             <div className="bg-muted rounded-lg p-4">
                 <div className="flex items-center justify-between">
                     <p className="text-lg font-semibold">Tasks ({ total })</p>
-                    <Button variant="muted" size="icon" onClick={createTask}>
-                        <PlusIcon className="size-4 text-neutral-400" />
-                    </Button>
+                    
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="muted" size="icon" onClick={createTask}>
+                                    <PlusIcon className="size-4 text-neutral-400" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Add task</TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
                 
                 <DottedSeparator className="my-4" />
@@ -152,9 +160,17 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
             <div className="bg-white border rounded-lg p-4">
                 <div className="flex items-center justify-between">
                     <p className="text-lg font-semibold">Projects ({ total })</p>
-                    <Button variant="secondary" size="icon" onClick={createProject}>
-                        <PlusIcon className="size-4 text-neutral-400" />
-                    </Button>
+                    
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="secondary" size="icon" onClick={createProject}>
+                                    <PlusIcon className="size-4 text-neutral-400" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Add project</TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
                 
                 <DottedSeparator className="my-4" />
@@ -206,11 +222,19 @@ export const MemberList = ({ data, total }: MembersListProps) => {
             <div className="bg-white border rounded-lg p-4">
                 <div className="flex items-center justify-between">
                     <p className="text-lg font-semibold">Members ({ total })</p>
-                    <Button variant="secondary" size="icon" asChild>
-                        <Link href={`/workspaces/${workspaceId}/members`}>
-                            <SettingsIcon className="size-4 text-neutral-400" />
-                        </Link>
-                    </Button>
+                    
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="secondary" size="icon" asChild>
+                                    <Link href={`/workspaces/${workspaceId}/members`}>
+                                        <SettingsIcon className="size-4 text-neutral-400" />
+                                    </Link>
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>View all</TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
                 
                 <DottedSeparator className="my-4" />
